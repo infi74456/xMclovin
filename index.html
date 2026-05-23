@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>xMclovin KEYS</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+        html, body { width: 100%; height: 100%; background-color: #050508; color: #fff; overflow: hidden; }
+        body { display: flex; flex-direction: column; min-height: 100vh; }
+
+        #particles-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
+
+        .wrapper { position: relative; z-index: 2; width: 100%; flex-grow: 1; display: flex; flex-direction: column; padding: 20px; justify-content: center; align-items: center; }
+        header { text-align: center; margin-bottom: 25px; }
+        h1 { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: 4px; text-transform: uppercase; text-shadow: 0 0 15px rgba(255,255,255,0.3); }
+        .subtitle { font-size: 10px; color: #ff0055; letter-spacing: 4px; margin-top: 5px; text-transform: uppercase; }
+
+        .section-flow { display: none; width: 100%; max-width: 360px; background: rgba(15, 15, 20, 0.9); border: 1px solid #222; border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .section-flow.active { display: block; animation: fadeIn 0.5s ease; }
+
+        .btn-premium { background: #fff; color: #000; border: none; padding: 14px; font-size: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; text-transform: uppercase; margin-bottom: 10px; transition: 0.3s; }
+        .btn-premium:disabled { background: #222; color: #555; }
+        .btn-secondary { background: transparent; border: 1px solid #444; color: #fff; }
+        
+        .key-box { background: #000; border: 1px solid #ff0055; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 18px; color: #00ffff; text-align: center; margin: 20px 0; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; } }
+        footer { position: fixed; bottom: 15px; width: 100%; text-align: center; font-size: 9px; color: #444; z-index: 2; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+    <canvas id="particles-canvas"></canvas>
+
+    <div class="wrapper">
+        <header>
+            <h1>xMclovin</h1>
+            <div class="subtitle">SECURITY ACCESS SYSTEM</div>
+        </header>
+
+        <!-- FASE 1 -->
+        <div id="section1" class="section-flow active">
+            <button class="btn-premium" onclick="processAction()">SUSCRIBETE EN YOUTUBE ✅</button>
+            <button class="btn-premium btn-secondary" id="btn-next-1" disabled onclick="changeSection(1, 2)">CONTINUAR</button>
+        </div>
+
+        <!-- FASE 2 -->
+        <div id="section2" class="section-flow">
+            <button class="btn-premium" onclick="processAction()">SUSCRIBETE EN YOUTUBE ✅ 1</button>
+            <button class="btn-premium" onclick="processAction()">SUSCRIBETE EN YOUTUBE ✅ 2</button>
+            <button class="btn-premium btn-secondary" id="btn-next-2" disabled onclick="changeSection(2, 3)">AVANZAR</button>
+        </div>
+
+        <!-- FASE 3 -->
+        <div id="section3" class="section-flow">
+            <button class="btn-premium" onclick="processAction()">YA BRO SUSCRIBETE✅</button>
+            <button class="btn-premium" onclick="processAction()">🟢 DALE AL BOTON SUSCRIBIRSE</button>
+            <button class="btn-premium" id="btn-final-unlock" disabled style="background:#ff0055; color:#fff;" onclick="generateKey()">GENERAR KEY</button>
+        </div>
+
+        <!-- FINAL -->
+        <div id="section-final" class="section-flow">
+            <h3 style="text-align:center; font-size: 14px;">LLAVE GENERADA Por xMclovin Vip ✅ 24h</h3>
+            <div class="key-box" id="key-output">...</div>
+        </div>
+    </div>
+
+    <footer>[ xMclovin DEVELOPER &copy; 2026 ]</footer>
+
+    <script>
+        const keysList = [
+    "xMclo-48291053", "xMclo-91736284", "xMclo-10583920", "xMclo-73625194", "xMclo-29485761",
+    "xMclo-59283741", "xMclo-10293847", "xMclo-74859603", "xMclo-23948576", "xMclo-67584930",
+    "xMclo-91028374", "xMclo-38475612", "xMclo-47561928", "xMclo-85746392", "xMclo-20193847"];
+        let count = 0;
+
+        function processAction() {
+            window.open("https://youtube.com/@xmclovin7049?si=G96qC2AEeMqbhhI7", "_blank");
+            count++;
+            if(count >= 1) document.getElementById('btn-next-1').disabled = false;
+            if(count >= 3) document.getElementById('btn-next-2').disabled = false;
+            if(count >= 5) document.getElementById('btn-final-unlock').disabled = false;
+        }
+
+        function changeSection(c, n) {
+            document.getElementById('section' + c).classList.remove('active');
+            document.getElementById('section' + n).classList.add('active');
+        }
+
+        function generateKey() {
+            document.getElementById('section3').classList.remove('active');
+            document.getElementById('section-final').classList.add('active');
+            document.getElementById('key-output').textContent = keysList[new Date().getDate() % keysList.length];
+        }
+
+        // Fondo de partículas (mismo efecto)
+        const canvas = document.getElementById('particles-canvas'), ctx = canvas.getContext('2d');
+        let w = canvas.width = window.innerWidth, h = canvas.height = window.innerHeight;
+        const lines = Array.from({length: 20}, () => ({x: Math.random()*w, y: -Math.random()*h, speed: Math.random()*5+2}));
+        function draw() {
+            ctx.fillStyle = 'rgba(5, 5, 8, 0.2)'; ctx.fillRect(0,0,w,h);
+            ctx.strokeStyle = '#333';
+            lines.forEach(l => {
+                l.y += l.speed;
+                if(l.y > h) l.y = -20;
+                ctx.beginPath(); ctx.moveTo(l.x, l.y); ctx.lineTo(l.x, l.y + 50); ctx.stroke();
+            });
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>
