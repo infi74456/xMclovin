@@ -93,24 +93,9 @@
         function generateKey() {
             document.getElementById('section3').classList.remove('active');
             document.getElementById('section-final').classList.add('active');
-            document.getElementById('key-output').textContent = keysList[new Date().getDate() % keysList.length];
+            // Corregido: 'keysList' cambiado por 'validKeys'
+            document.getElementById('key-output').textContent = validKeys[new Date().getDate() % validKeys.length];
         }
-
-        // Fondo de partículas (mismo efecto)
-        const canvas = document.getElementById('particles-canvas'), ctx = canvas.getContext('2d');
-        let w = canvas.width = window.innerWidth, h = canvas.height = window.innerHeight;
-        const lines = Array.from({length: 20}, () => ({x: Math.random()*w, y: -Math.random()*h, speed: Math.random()*5+2}));
-        function draw() {
-            ctx.fillStyle = 'rgba(5, 5, 8, 0.2)'; ctx.fillRect(0,0,w,h);
-            ctx.strokeStyle = '#333';
-            lines.forEach(l => {
-                l.y += l.speed;
-                if(l.y > h) l.y = -20;
-                ctx.beginPath(); ctx.moveTo(l.x, l.y); ctx.lineTo(l.x, l.y + 50); ctx.stroke();
-            });
-            requestAnimationFrame(draw);
-        }
-        draw();
     </script>
 </body>
 </html>
