@@ -39,27 +39,23 @@
             <div class="subtitle">SECURITY ACCESS SYSTEM</div>
         </header>
 
-        <!-- FASE 1 -->
         <div id="section1" class="section-flow active">
             <button class="btn-premium" onclick="processAction()">SUSCRIBETE EN YOUTUBE ✅</button>
             <button class="btn-premium btn-secondary" id="btn-next-1" disabled onclick="changeSection(1, 2)">CONTINUAR</button>
         </div>
 
-        <!-- FASE 2 -->
         <div id="section2" class="section-flow">
             <button class="btn-premium" onclick="processAction()">SUSCRIBE EN YOUTUBE ✅ 1</button>
             <button class="btn-premium" onclick="processAction()">SUSCRIBE EN YOUTUBE ✅ 2</button>
             <button class="btn-premium btn-secondary" id="btn-next-2" disabled onclick="changeSection(2, 3)">AVANZAR</button>
         </div>
 
-        <!-- FASE 3 -->
         <div id="section3" class="section-flow">
             <button class="btn-premium" onclick="processAction()">YA BRO SUSCRIBETE ✅</button>
             <button class="btn-premium" onclick="processAction()">🟢 DALE AL BOTON SUSCRIBIRSE</button>
             <button class="btn-premium" id="btn-final-unlock" disabled style="background:#ff0055; color:#fff;" onclick="generateKey()">GENERAR KEY</button>
         </div>
 
-        <!-- FINAL -->
         <div id="section-final" class="section-flow">
             <h3 style="text-align:center; font-size: 14px;">LLAVE GENERADA Por xMclovin Vip ✅ 24h</h3>
             <div class="key-box" id="key-output">...</div>
@@ -73,6 +69,69 @@
             "xMclo-55829104", "xMclo-88273641", "xMclo-12938475", 
             "xMclo-99485762", "xMclo-33847561", "xMclo-67182930",
             "xMclo-44596037", "xMclo-20394857", "xMclo-76584932",
+            "xMclo-51029384", "xMclo-98475623", "xMclo-27364591",
+            "xMclo-64573829", "xMclo-39284756", "xMclo-81726354"];
+        let count = 0;
+
+        // --- LÓGICA DE ESTRELLAS ---
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let stars = Array.from({length: 40}, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 5 + 2,
+            speed: Math.random() * 1 + 0.5,
+            hue: Math.random() * 360
+        }));
+
+        function drawStar(x, y, r, hue) {
+            ctx.beginPath();
+            ctx.fillStyle = `hsl(${hue}, 100%, 60%)`;
+            for (let i = 0; i < 5; i++) {
+                ctx.lineTo(x + r * Math.cos((i * 4 * Math.PI) / 5), y + r * Math.sin((i * 4 * Math.PI) / 5));
+            }
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                drawStar(s.x, s.y, s.size, s.hue);
+                s.y += s.speed;
+                s.hue = (s.hue + 1) % 360; // Cambio de color
+                if (s.y > canvas.height) s.y = -10;
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // --- LÓGICA DE PROCESOS ---
+        function processAction() {
+            window.open("https://youtube.com/@xmclovin7049?si=G96qC2AEeMqbhhI7", "_blank");
+            count++;
+            if(count >= 1) document.getElementById('btn-next-1').disabled = false;
+            if(count >= 3) document.getElementById('btn-next-2').disabled = false;
+            if(count >= 5) document.getElementById('btn-final-unlock').disabled = false;
+        }
+
+        function changeSection(c, n) {
+            document.getElementById('section' + c).classList.remove('active');
+            document.getElementById('section' + n).classList.add('active');
+        }
+
+        function generateKey() {
+            document.getElementById('section3').classList.remove('active');
+            document.getElementById('section-final').classList.add('active');
+            const randomIndex = Math.floor(Math.random() * validKeys.length);
+            document.getElementById('key-output').textContent = validKeys[randomIndex];
+        }
+    </script>
+</body>
+</html>
             "xMclo-51029384", "xMclo-98475623", "xMclo-27364591",
             "xMclo-64573829", "xMclo-39284756", "xMclo-81726354"];
         let count = 0;
