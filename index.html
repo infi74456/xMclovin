@@ -65,31 +65,25 @@
     <footer>[ xMclovin DEVELOPER &copy; 2026 ]</footer>
 
     <script>
-        const validKeys = [
-            "xMclo-55829104", "xMclo-88273641", "xMclo-12938475", 
-            "xMclo-99485762", "xMclo-33847561", "xMclo-67182930",
-            "xMclo-44596037", "xMclo-20394857", "xMclo-76584932",
-            "xMclo-51029384", "xMclo-98475623", "xMclo-27364591",
-            "xMclo-64573829", "xMclo-39284756", "xMclo-81726354"];
+        const validKeys = ["xMclo-55829104", "xMclo-88273641", "xMclo-12938475", "xMclo-99485762", "xMclo-33847561", "xMclo-67182930", "xMclo-44596037", "xMclo-20394857", "xMclo-76584932", "xMclo-51029384", "xMclo-98475623", "xMclo-27364591", "xMclo-64573829", "xMclo-39284756", "xMclo-81726354"];
         let count = 0;
 
-        // --- LÓGICA DE ESTRELLAS ---
         const canvas = document.getElementById('particles-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        let stars = Array.from({length: 40}, () => ({
+        let stars = Array.from({length: 30}, () => ({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
-            size: Math.random() * 5 + 2,
-            speed: Math.random() * 1 + 0.5,
+            size: Math.random() * 8 + 3,
+            speed: Math.random() * 0.5 + 0.2,
             hue: Math.random() * 360
         }));
 
         function drawStar(x, y, r, hue) {
             ctx.beginPath();
-            ctx.fillStyle = `hsl(${hue}, 100%, 60%)`;
+            ctx.fillStyle = `hsl(${hue}, 100%, 70%)`;
             for (let i = 0; i < 5; i++) {
                 ctx.lineTo(x + r * Math.cos((i * 4 * Math.PI) / 5), y + r * Math.sin((i * 4 * Math.PI) / 5));
             }
@@ -101,15 +95,14 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             stars.forEach(s => {
                 drawStar(s.x, s.y, s.size, s.hue);
-                s.y += s.speed;
-                s.hue = (s.hue + 1) % 360; // Cambio de color
-                if (s.y > canvas.height) s.y = -10;
+                s.y += s.speed; // Mueve la estrella hacia abajo
+                s.hue = (s.hue + 1) % 360; // Cambia de color
+                if (s.y > canvas.height) s.y = -20;
             });
             requestAnimationFrame(animate);
         }
         animate();
 
-        // --- LÓGICA DE PROCESOS ---
         function processAction() {
             window.open("https://youtube.com/@xmclovin7049?si=G96qC2AEeMqbhhI7", "_blank");
             count++;
@@ -126,34 +119,7 @@
         function generateKey() {
             document.getElementById('section3').classList.remove('active');
             document.getElementById('section-final').classList.add('active');
-            const randomIndex = Math.floor(Math.random() * validKeys.length);
-            document.getElementById('key-output').textContent = validKeys[randomIndex];
-        }
-    </script>
-</body>
-</html>
-            "xMclo-51029384", "xMclo-98475623", "xMclo-27364591",
-            "xMclo-64573829", "xMclo-39284756", "xMclo-81726354"];
-        let count = 0;
-
-        function processAction() {
-            window.open("https://youtube.com/@xmclovin7049?si=G96qC2AEeMqbhhI7", "_blank");
-            count++;
-            if(count >= 1) document.getElementById('btn-next-1').disabled = false;
-            if(count >= 3) document.getElementById('btn-next-2').disabled = false;
-            if(count >= 5) document.getElementById('btn-final-unlock').disabled = false;
-        }
-
-        function changeSection(c, n) {
-            document.getElementById('section' + c).classList.remove('active');
-            document.getElementById('section' + n).classList.add('active');
-        }
-
-        function generateKey() {
-            document.getElementById('section3').classList.remove('active');
-            document.getElementById('section-final').classList.add('active');
-            // Corregido: 'keysList' cambiado por 'validKeys'
-            document.getElementById('key-output').textContent = validKeys[new Date().getDate() % validKeys.length];
+            document.getElementById('key-output').textContent = validKeys[Math.floor(Math.random() * validKeys.length)];
         }
     </script>
 </body>
