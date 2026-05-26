@@ -12,19 +12,40 @@
         #particles-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
 
         .wrapper { position: relative; z-index: 2; width: 100%; flex-grow: 1; display: flex; flex-direction: column; padding: 20px; justify-content: center; align-items: center; }
-        header { text-align: center; margin-bottom: 25px; }
+        header { text-align: center; margin-bottom: 20px; }
         h1 { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: 4px; text-transform: uppercase; text-shadow: 0 0 15px rgba(255,255,255,0.3); }
         .subtitle { font-size: 10px; color: #ff0055; letter-spacing: 4px; margin-top: 5px; text-transform: uppercase; }
+
+        .status-bar { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 9px; font-weight: 700; letter-spacing: 2px; color: #00ff55; margin-bottom: 15px; text-transform: uppercase; }
+        .status-dot { width: 6px; height: 6px; background-color: #00ff55; border-radius: 50%; box-shadow: 0 0 8px #00ff55; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
 
         .section-flow { display: none; width: 100%; max-width: 360px; background: rgba(15, 15, 20, 0.9); border: 1px solid #222; border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .section-flow.active { display: block; animation: fadeIn 0.5s ease; }
 
-        .btn-premium { background: #fff; color: #000; border: none; padding: 14px; font-size: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; text-transform: uppercase; margin-bottom: 10px; transition: 0.3s; }
-        .btn-premium:disabled { background: #222; color: #555; }
+        .btn-premium { display: flex; align-items: center; justify-content: center; gap: 8px; background: #fff; color: #000; border: none; padding: 14px; font-size: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; text-transform: uppercase; margin-bottom: 10px; transition: 0.3s; }
+        .btn-premium:disabled { background: #222; color: #555; cursor: not-allowed; }
+        .btn-premium svg { width: 16px; height: 16px; fill: currentColor; }
         .btn-secondary { background: transparent; border: 1px solid #444; color: #fff; }
         
-        .key-box { background: #000; border: 1px solid #ff0055; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 18px; color: #00ffff; text-align: center; margin: 20px 0; }
+        .key-box { position: relative; background: #000; border: 1px solid #ff0055; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 18px; color: #00ffff; text-align: center; margin: 15px 0 10px 0; overflow: hidden; }
+        .key-box::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(to right, transparent, #ff0055, transparent); animation: scan 2s linear infinite; }
+        @keyframes scan { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
         
+        .telegram-notice { font-size: 11px; color: #00ffff; text-align: center; margin-top: 15px; margin-bottom: 8px; line-height: 1.4; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .btn-comunidad { background: transparent; border: 1px solid #0088cc; color: #0088cc; margin-bottom: 0; }
+        .btn-comunidad:hover { background: rgba(0, 136, 204, 0.1); }
+
+        .timer-box { font-size: 11px; color: #aaa; text-align: center; margin-bottom: 15px; letter-spacing: 1px; text-transform: uppercase; }
+        .timer-box span { color: #ff0055; font-weight: bold; font-family: monospace; }
+
+        /* Pantallas de Carga */
+        .loader-content { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px 0; }
+        .spinner { width: 40px; height: 40px; border: 4px solid rgba(255, 255, 255, 0.1); border-top-color: #ff0055; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 15px; }
+        .loader-text { font-size: 11px; color: #aaa; letter-spacing: 2px; text-transform: uppercase; text-align: center; font-weight: 600; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; } }
         footer { position: fixed; bottom: 15px; width: 100%; text-align: center; font-size: 9px; color: #444; z-index: 2; letter-spacing: 2px; }
     </style>
@@ -35,30 +56,66 @@
 
     <div class="wrapper">
         <header>
+            <div class="status-bar"><div class="status-dot"></div> Server Status: Online</div>
             <h1>xMclovin Vip</h1>
             <div class="subtitle">SECURITY ACCESS SYSTEM</div>
         </header>
 
+        <!-- SECCIÓN 1 -->
         <div id="section1" class="section-flow active">
-            <button class="btn-premium" onclick="processAction()">SUSCRIBETE EN YOUTUBE ✅</button>
-            <button class="btn-premium btn-secondary" id="btn-next-1" disabled onclick="changeSection(1, 2)">CONTINUAR</button>
+            <button class="btn-premium" id="sub-btn-1" onclick="verifyAction(this, 1)">
+                <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                SUSCRIBETE EN YOUTUBE
+            </button>
+            <button class="btn-premium btn-secondary" id="btn-next-1" disabled onclick="transitionToSection(1, 2)">CONTINUAR</button>
         </div>
 
+        <!-- SECCIÓN 2 -->
         <div id="section2" class="section-flow">
-            <button class="btn-premium" onclick="processAction()">SUSCRIBE EN YOUTUBE ✅ 1</button>
-            <button class="btn-premium" onclick="processAction()">SUSCRIBE EN YOUTUBE ✅ 2</button>
-            <button class="btn-premium btn-secondary" id="btn-next-2" disabled onclick="changeSection(2, 3)">AVANZAR</button>
+            <button class="btn-premium" id="sub-btn-2" onclick="verifyAction(this, 2)">
+                <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                SUSCRIBE EN YOUTUBE ✅ 1
+            </button>
+            <button class="btn-premium" id="sub-btn-3" onclick="verifyAction(this, 3)">
+                <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                SUSCRIBE EN YOUTUBE ✅ 2
+            </button>
+            <button class="btn-premium btn-secondary" id="btn-next-2" disabled onclick="transitionToSection(2, 3)">AVANZAR</button>
         </div>
 
+        <!-- SECCIÓN 3 -->
         <div id="section3" class="section-flow">
-            <button class="btn-premium" onclick="processAction()">YA BRO SUSCRIBETE ✅</button>
-            <button class="btn-premium" onclick="processAction()">🟢 DALE AL BOTON SUSCRIBIRSE</button>
-            <button class="btn-premium" id="btn-final-unlock" disabled style="background:#ff0055; color:#fff;" onclick="generateKey()">GENERAR KEY</button>
+            <button class="btn-premium" id="sub-btn-4" onclick="verifyAction(this, 4)">
+                <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                YA BRO SUSCRIBETE ✅
+            </button>
+            <button class="btn-premium" id="sub-btn-5" onclick="verifyAction(this, 5)">
+                <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                🟢 DALE AL BOTON SUSCRIBIRSE
+            </button>
+            <button class="btn-premium" id="btn-final-unlock" disabled style="background:#ff0055; color:#fff;" onclick="transitionToLoader()">GENERAR KEY</button>
         </div>
 
+        <!-- PANTALLA GENERAL DE CARGA / VERIFICACIÓN -->
+        <div id="section-loader" class="section-flow">
+            <div class="loader-content">
+                <div class="spinner"></div>
+                <div class="loader-text" id="loader-message">Generando Llave Segura...</div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN FINAL -->
         <div id="section-final" class="section-flow">
-            <h3 style="text-align:center; font-size: 14px;">LLAVE GENERADA Por xMclovin Vip ✅ 24h</h3>
+            <h3 style="text-align:center; font-size: 14px;">LLAVE GENERADA Por xMclovin Vip ✅</h3>
             <div class="key-box" id="key-output">...</div>
+            <div class="timer-box">La llave expira en: <span id="countdown">24:00:00</span></div>
+            <button class="btn-premium" id="btn-copy" style="background:#00ffff; color:#000;" onclick="copyToClipboard()">COPIAR KEY 📋</button>
+            
+            <div class="telegram-notice">Únanse al nuevo grupo de telegram para nuevas actualizaciones</div>
+            <button class="btn-premium btn-comunidad" onclick="irAComunidad()">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.66-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.35-.49.97-.74 3.79-1.65 6.32-2.74 7.59-3.27 3.6-1.5 4.35-1.76 4.84-1.77.11 0 .35.03.5.16.13.1.16.24.18.34.02.13.02.27 0 .42z"/></svg>
+                GRUPO DE TELEGRAM 🚀
+            </button>
         </div>
     </div>
 
@@ -67,7 +124,41 @@
     <script>
         const validKeys = ["xMclo-55829104", "xMclo-88273641", "xMclo-12938475", "xMclo-99485762", "xMclo-33847561", "xMclo-67182930", "xMclo-44596037", "xMclo-20394857", "xMclo-76584932", "xMclo-51029384", "xMclo-98475623", "xMclo-27364591", "xMclo-64573829", "xMclo-39284756", "xMclo-81726354"];
         let count = 0;
+        let currentSectionId = 1;
 
+        // --- SISTEMA DE AUDIO ---
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+
+        function playSound(type) {
+            try {
+                if (!audioCtx) audioCtx = new AudioCtx();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.08);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.08);
+                } else if (type === 'success') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(600, audioCtx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.25);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.25);
+                }
+            } catch (e) { console.log("Audio bloqueado"); }
+        }
+
+        // --- FONDO ANIMADO ---
         const canvas = document.getElementById('particles-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
@@ -95,31 +186,129 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             stars.forEach(s => {
                 drawStar(s.x, s.y, s.size, s.hue);
-                s.y += s.speed; // Mueve la estrella hacia abajo
-                s.hue = (s.hue + 1) % 360; // Cambia de color
+                s.y += s.speed; 
+                s.hue = (s.hue + 1) % 360; 
                 if (s.y > canvas.height) s.y = -20;
             });
             requestAnimationFrame(animate);
         }
         animate();
 
-        function processAction() {
+        // --- NUEVA LÓGICA: VERIFICACIÓN SIMULADA DE BOTONES DE SUSCRIPCIÓN ---
+        function verifyAction(buttonElement, buttonIndex) {
+            playSound('click');
             window.open("https://youtube.com/@xmclovin7049?si=G96qC2AEeMqbhhI7", "_blank");
-            count++;
-            if(count >= 1) document.getElementById('btn-next-1').disabled = false;
-            if(count >= 3) document.getElementById('btn-next-2').disabled = false;
-            if(count >= 5) document.getElementById('btn-final-unlock').disabled = false;
+            
+            // Guardamos la sección activa actual para regresar a ella
+            const currentSection = document.getElementById('section' + currentSectionId);
+            currentSection.classList.remove('active');
+            
+            // Mostramos la pantalla de carga con texto dinámico de verificación
+            document.getElementById('loader-message').textContent = "Verificando Suscripción...";
+            document.getElementById('section-loader').classList.add('active');
+
+            setTimeout(() => {
+                // Al terminar los 2 segundos, quitamos la carga y regresamos a la sección
+                document.getElementById('section-loader').classList.remove('active');
+                currentSection.classList.add('active');
+                playSound('success');
+
+                // Cambiamos el diseño del botón presionado a Verde/Verificado
+                buttonElement.innerHTML = "VERIFICADO ✅";
+                buttonElement.style.background = "#00ff55";
+                buttonElement.style.color = "#000";
+                buttonElement.disabled = true; // Evita que lo presionen repetidamente
+
+                count++;
+                // Activación de los botones de avanzar según los clics acumulados
+                if(count >= 1) document.getElementById('btn-next-1').disabled = false;
+                if(count >= 3) document.getElementById('btn-next-2').disabled = false;
+                if(count >= 5) document.getElementById('btn-final-unlock').disabled = false;
+            }, 2000);
         }
 
-        function changeSection(c, n) {
-            document.getElementById('section' + c).classList.remove('active');
-            document.getElementById('section' + n).classList.add('active');
+        // --- NUEVA LÓGICA: CARGA AL PASAR DE SECCIÓN (CONTINUAR / AVANZAR) ---
+        function transitionToSection(current, next) {
+            playSound('click');
+            document.getElementById('section' + current).classList.remove('active');
+            
+            document.getElementById('loader-message').textContent = "Validando Accesos del Servidor...";
+            document.getElementById('section-loader').classList.add('active');
+
+            setTimeout(() => {
+                document.getElementById('section-loader').classList.remove('active');
+                document.getElementById('section' + next).classList.add('active');
+                currentSectionId = next; // Actualizamos la sección global en la que estamos
+                playSound('success');
+            }, 2000);
+        }
+
+        // --- CARGA FINAL PARA GENERAR LA KEY ---
+        function transitionToLoader() {
+            playSound('click');
+            document.getElementById('section3').classList.remove('active');
+            
+            document.getElementById('loader-message').textContent = "Generando Llave Segura...";
+            document.getElementById('section-loader').classList.add('active');
+            
+            setTimeout(() => {
+                generateKey();
+            }, 2000);
         }
 
         function generateKey() {
-            document.getElementById('section3').classList.remove('active');
+            playSound('success');
+            document.getElementById('section-loader').classList.remove('active');
             document.getElementById('section-final').classList.add('active');
             document.getElementById('key-output').textContent = validKeys[Math.floor(Math.random() * validKeys.length)];
+            startTimer(24 * 60 * 60); 
+        }
+
+        // --- TEMPORIZADOR ---
+        function startTimer(duration) {
+            let timer = duration, hours, minutes, seconds;
+            const display = document.getElementById('countdown');
+            
+            const interval = setInterval(function () {
+                hours = parseInt(timer / 3600, 10);
+                minutes = parseInt((timer % 3600) / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                hours = hours < 10 ? "0" + hours : hours;
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = hours + ":" + minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(interval);
+                    display.textContent = "EXPIRADA";
+                    document.getElementById('key-output').style.color = '#ff0055';
+                    document.getElementById('key-output').textContent = "KEY_EXPIRED";
+                }
+            }, 1000);
+        }
+
+        // --- COPIAR Y TELEGRAM ---
+        function copyToClipboard() {
+            playSound('success');
+            const keyText = document.getElementById('key-output').textContent;
+            navigator.clipboard.writeText(keyText).then(() => {
+                const copyBtn = document.getElementById('btn-copy');
+                copyBtn.textContent = "¡COPIADO! 💸";
+                copyBtn.style.background = "#00ff55";
+                setTimeout(() => {
+                    copyBtn.textContent = "COPIAR KEY 📋";
+                    copyBtn.style.background = "#00ffff";
+                }, 2000);
+            }).catch(err => {
+                console.error('Error al copiar: ', err);
+            });
+        }
+
+        function irAComunidad() {
+            playSound('click');
+            window.open("https://t.me/+3MQ7fkTJPn5mNDZh", "_blank"); 
         }
     </script>
 </body>
